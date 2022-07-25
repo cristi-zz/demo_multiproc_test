@@ -41,7 +41,7 @@ def worker_function(no_messages, message_stem):
     :param message_stem:
     :return:
     """
-    L = logging.getLogger('queued')
+    L = logging.getLogger()
     L.setLevel(logging.DEBUG)
     L.info("Starting the messaging output")
     for m in range(no_messages):
