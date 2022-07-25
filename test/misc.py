@@ -1,5 +1,6 @@
 import logging
-from typing import List, Tuple, Dict
+import bisect
+from typing import List, Tuple, Dict, Union
 import multiprocessing as mp
 import multiprocessing.managers
 import time
@@ -70,32 +71,53 @@ class Time_Accelerator():
         scaled_value += self.zero_point
         return scaled_value
 
-#
-# class Time_Dependent_Iterator():
-#     """
-#
-#     """
-#
-#     def __init__(self, value_list:List[Tuple[float, Union[float, str]]], time_obj:Time_Accelerator):
-#         self.value_list = sorted(value_list, key=lambda x: x[0])
-#         self.key_list = [a[0] for a in value_list]
-#         self.time_obj = time_obj
-#         if len(value_list) > 0:
-#             self.lowest_ts = self.value_list[0][0]
-#             self.highest_ts = self.value_list[-1][0]
-#         else:
-#             assert "value_list must have at least one element"
-#
-#     def __call__(self):
-#         crt_time = self.time_obj()
-#         if crt_time < self.lowest_ts:
-#             return self.value_list[0][1]
-#         if crt_time > self.highest_ts:
-#             return self.value_list[-1][1]
-#         i = bisect.bisect_left(self.key_list, crt_time)
-#         i = max(i, 1)
-#         value = self.value_list[i-1][1]
-#         return value
+
+class Time_Dependent_Iterator():
+    """
+    Objects of this class, when called, will issue a float (or a str) depending on the current timestamp.
+
+    One can configure when and what values to be issued and this class will interpolate between values. One can also
+    specify the timer object, in case a certain time accelerator is used. If set to None, it will be time.time
+    """
+
+    def __init__(self, value_list: List[Tuple[float, Union[float, str]]], time_obj: Time_Accelerator = None):
+        """
+        Sets up the object.
+
+        value_list is a list of tuples, (timestamp, value). Example:
+        [(0, 10),
+         (10, 20),
+         (15, 0),
+         (20, 5),
+         ]
+         This means that calling our object will return 10 until second 9.9, then 20, until second 14.9, and then 0
+         between second 15 and 19.9. After second 20, it will output 5, indefinitely.
+
+         The 0.1 precision is just for show, in reality the < operation is used. The "seconds" is the timestamp obtained
+         from time_obj. Using a Time_Accelerator is nice because it can "reset" the time to always start at second 0.
+
+        """
+        self.value_list = sorted(value_list, key=lambda x: x[0])
+        self.key_list = [a[0] for a in value_list]
+        if time_obj is None:
+            time_obj = time.time
+        self.time_obj = time_obj
+        if len(value_list) > 0:
+            self.lowest_ts = self.value_list[0][0]
+            self.highest_ts = self.value_list[-1][0]
+        else:
+            assert "value_list must have at least one element"
+
+    def __call__(self):
+        crt_time = self.time_obj()
+        if crt_time < self.lowest_ts:
+            return self.value_list[0][1]
+        if crt_time > self.highest_ts:
+            return self.value_list[-1][1]
+        i = bisect.bisect_left(self.key_list, crt_time)
+        i = max(i, 1)
+        value = self.value_list[i-1][1]
+        return value
 
 
 class Remote_Call_Recorder():
