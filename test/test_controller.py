@@ -79,7 +79,7 @@ def test_turn_zero_to_one(proxy_manager):
     timestamps, args_list, kwargs_list = zip(*calls)
     assert len(calls) > 0, "There must be one transition"
     assert args_list[0][0] == 1, "The transition must be towards 1"
-    assert timestamps[0] == pytest.approx(30, abs=1), "The transition should be around 20 + 10 seconds mark"
+    assert timestamps[0] == pytest.approx(30, abs=3), "The transition should be around 20 + 10 seconds mark"
 
 
 def test_turn_hysteresis_too_slow(proxy_manager):
