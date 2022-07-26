@@ -25,16 +25,15 @@ To have reports from multiprocessing (Will break the "regular" coverage)
 concurrency=multiprocessing
 branch = True
 
-Run it again from IDE. Now there is no coverage report shown!
+2) Run it again from IDE. Now there is no coverage report shown!
 
-Navigate where the IDE is saving the coverage files PyCharm: ~/.cache/JetBrains/PyCharmXXXX.Y/coverage
+3) Navigate where the IDE is saving the coverage files PyCharm: ~/.cache/JetBrains/PyCharmXXXX.Y/coverage
 
-Make sure the conda env is active.
-Run 
+4) Make sure the conda env is active. Run 
 
     coverage combine *.coverage.*; coverage xml
 
-Now, back to IDE, Run -> Show Coverage Data -> Plus -> (navigate to xml)
+5) Now, back to IDE, Run -> Show Coverage Data -> Plus -> (navigate to xml)
 
 Hint: If you want back the IDE coverage, disable the first line in .coveragerc
 
