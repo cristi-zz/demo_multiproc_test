@@ -21,6 +21,7 @@ To have reports from multiprocessing (Will break the "regular" coverage)
 
 1) Make .coveragerc in test folder with:
 
+
     [run]
     concurrency=multiprocessing
     branch = True
