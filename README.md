@@ -1,7 +1,13 @@
 ## PyTesting while multiprocessing?
-### No worries! Read on!
+### No worries!
 
-This a demonstration of Python (py)testing while multiprocessing.
+In [this blog post](https://www.visoft.ro/computer-programming/testing-while-multiprocessing/1610/) I talk about how to 
+do Python (py)testing while multiprocessing.
+
+This repo is the accompanying code. Feel free to read it as it is (lots of comments in the code) or follow the story
+in the blog (There are pictures).
+
+Enjoy!
 
 ## Setup and run:
 
@@ -20,21 +26,21 @@ Note the lack of coverage in multiprocessing.
 To have reports from multiprocessing (Will break the "regular" coverage)
 
 1) Make .coveragerc in test folder with:
-
+ 
 
     [run]
     concurrency=multiprocessing
     branch = True
 
-2) Run it again from IDE. Now there is no coverage report shown!
+3) Run it again from IDE. Now there is no coverage report shown!
 
-3) Navigate where the IDE is saving the coverage files PyCharm: ~/.cache/JetBrains/PyCharmXXXX.Y/coverage
+4) Navigate where the IDE is saving the coverage files PyCharm: ~/.cache/JetBrains/PyCharmXXXX.Y/coverage
 
-4) Make sure the conda env is active. Run 
+5) Make sure the conda env is active. Run 
 
     coverage combine *.coverage.*; coverage xml
 
-5) Now, back to IDE, Run -> Show Coverage Data -> Plus -> (navigate to xml)
+6) Now, back to IDE, Run -> Show Coverage Data -> Plus -> (navigate to xml)
 
 Hint: If you want back the IDE coverage, disable the first line in .coveragerc
 
