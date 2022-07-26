@@ -27,10 +27,11 @@ To have reports from multiprocessing (Will break the "regular" coverage)
 
 1) Make .coveragerc in test folder with:
  
+.coveragerc file:
 
-    [run]
-    concurrency=multiprocessing
-    branch = True
+        [run]
+        concurrency=multiprocessing
+        branch = True
 
 3) Run it again from IDE. Now there is no coverage report shown!
 
