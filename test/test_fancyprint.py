@@ -161,7 +161,8 @@ def test_mock_print_large_messages_truncated(mocker):
     display_mock.assert_called()
     assert display_mock.call_count < no_msgs, "The number of shown messages should be smaller"
 
-@pytest.mark.xfail(reason="caplog does not work over processes")
+
+@pytest.mark.xfail(reason="mocker can't retrieve recordings trhough process boundary")
 def test_mock_print_from_mp(mocker, memlogger):
     """
     There is no way to get info about a mocker from inside a process. Note how the assert code in the end of the
@@ -176,7 +177,7 @@ def test_mock_print_from_mp(mocker, memlogger):
     main_proc.join(1)
     misc.assert_no_errors_in_logs(memlogger.buffer)
 
-    # There is no info propagated from inside the process to outside. Note how
+    # There is no info propagated from inside the process to outside. These asserts will fail
     display_mock.assert_called()
     assert display_mock.call_count == no_msgs
 
@@ -194,6 +195,7 @@ def test_mock_print_large_messages_with_mock(mocker):
     no_msgs = 100
     fancyprint.worker_function(no_msgs, "A long message")
     display_mock.assert_called()
+    # Assert passes because the mocker retrieves info inside the same process
     assert display_mock.call_count == no_msgs, "All messages should have been displayed"
 
 
@@ -245,7 +247,6 @@ def test_listen_to_calls_no_mp(mocker):
     assert len(timestamps) == 3
     assert len(args_list) == 3
     assert len(kwargs_list) == 3
-    assert len(args_list[0]) > 0
 
 
 def test_register_a_call_listener_to_manager(mocker, memlogger):
@@ -274,7 +275,6 @@ def test_register_a_call_listener_to_manager(mocker, memlogger):
     timestamps, args_list, kwargs_list = zip(*calls)
     assert len(args_list) == 3
     assert len(kwargs_list) == 3
-    assert len(args_list[0]) > 0
 
     test_manager.shutdown()
     test_manager.join(1)
