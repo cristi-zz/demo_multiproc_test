@@ -1,7 +1,7 @@
 ## PyTesting while multiprocessing?
 ### No worries!
 
-In [this blog post](https://www.visoft.ro/computer-programming/testing-while-multiprocessing/1610/) I talk about how to 
+In [this blog post](https://visoft.ro/programming/testing-while-multiprocessing/2022/07/26/) I talk about how to 
 do Python (py)testing while multiprocessing.
 
 This repo is the accompanying code. Feel free to read it as it is (lots of comments in the code) or follow the story
